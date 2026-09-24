@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="robots" content="noindex,nofollow">
+  <title>360° Factory Tour</title>
+  <link rel="stylesheet" href="https://cdn.pannellum.org/2.5/pannellum.css">
+  <script src="https://cdn.pannellum.org/2.5/pannellum.js"></script>
+  <style>
+    html,body,#panorama{width:100%;height:100%;margin:0;overflow:hidden;background:#07111d}
+    body{font-family:Arial,Helvetica,sans-serif}
+    #panorama{position:relative}
+    .brand-panel{position:absolute;z-index:10;top:18px;left:18px;max-width:calc(100% - 110px);padding:11px 16px;border:1px solid rgba(255,255,255,.28);border-radius:4px;background:rgba(4,17,31,.72);box-shadow:0 4px 18px rgba(0,0,0,.2);color:#fff;pointer-events:none;backdrop-filter:blur(4px)}
+    .brand-title{font-size:18px;font-weight:700;line-height:1.2;letter-spacing:.2px}
+    .brand-subtitle{margin-top:4px;font-size:12px;line-height:1.35;color:rgba(255,255,255,.82)}
+    .drag-tip{position:absolute;z-index:10;left:50%;bottom:20px;transform:translateX(-50%);padding:8px 14px;border-radius:20px;background:rgba(4,17,31,.65);color:#fff;font-size:12px;line-height:1;white-space:nowrap;pointer-events:none;transition:opacity .35s ease}
+    .drag-tip.is-hidden{opacity:0}
+    .pnlm-load-box{background:rgba(4,17,31,.78)!important}
+    .pnlm-about-msg{display:none!important}
+    @media (max-width:640px){.brand-panel{top:12px;left:12px;padding:9px 12px;max-width:calc(100% - 84px)}.brand-title{font-size:15px}.brand-subtitle{font-size:11px}.drag-tip{bottom:14px}}
+  </style>
+</head>
+<body>
+  <div id="panorama" aria-label="Interactive 360 degree factory panorama"></div>
+  <div class="brand-panel">
+    <div class="brand-title">360° Factory Tour</div>
+    <div class="brand-subtitle">Explore our manufacturing facility</div>
+  </div>
+  <div class="drag-tip" id="dragTip">Drag to explore · Scroll to zoom · Open fullscreen</div>
+
+  <script>
+    (function () {
+      var viewer = pannellum.viewer('panorama', {
+        type: 'cubemap',
+        cubeMap: [
+          'face_front.jpg',
+          'face_right.jpg',
+          'face_back.jpg',
+          'face_left.jpg',
+          'face_up.jpg',
+          'face_down.jpg'
+        ],
+        autoLoad: true,
+        autoRotate: -2.4,
+        autoRotateInactivityDelay: 2600,
+        autoRotateStopDelay: 0,
+        pitch: 0,
+        yaw: 0,
+        hfov: 92,
+        minHfov: 45,
+        maxHfov: 115,
+        showZoomCtrl: true,
+        showFullscreenCtrl: true,
+        keyboardZoom: true,
+        mouseZoom: 'fullscreenonly',
+        draggable: true,
+        friction: 0.16,
+        orientationOnByDefault: false,
+        crossOrigin: 'anonymous',
+        escapeHTML: true,
+        backgroundColor: [0.03, 0.07, 0.12],
+        strings: {
+          loadButtonLabel: 'Enter 360° Tour',
+          loadingLabel: 'Loading 360° Tour…',
+          bylineLabel: 'by %s',
+          noPanoramaError: 'The 360° tour cannot be loaded.',
+          fileAccessError: 'The 360° image files are unavailable.',
+          malformedURLError: 'The 360° image address is invalid.',
+          iOS8WebGLError: 'This device does not support the 360° viewer.',
+          genericWebGLError: 'Your browser does not support the 360° viewer.',
+          textureSizeError: 'This device cannot display the full-resolution panorama.',
+          unknownError: 'An unknown error occurred while loading the 360° tour.'
+        }
+      });
+
+      var tip = document.getElementById('dragTip');
+      var hideTip = function () { tip.className = 'drag-tip is-hidden'; };
+      document.getElementById('panorama').addEventListener('pointerdown', hideTip, { once: true });
+      document.getElementById('panorama').addEventListener('touchstart', hideTip, { once: true, passive: true });
+      window.setTimeout(hideTip, 8000);
+      window.factoryTourViewer = viewer;
+    }());
+  </script>
+</body>
+</html>
